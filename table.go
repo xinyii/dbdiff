@@ -9,16 +9,17 @@ import (
 
 // Column : mysql Column desc.
 type Column struct {
-	Idx     int
-	Name    string
-	Type    string
-	Null    string
-	Default string
-	Extra   string
-	Comment string
-
-	colidx int
-	flag   int // 1=drop, 2=add , 3=update , 4=move
+	Idx       int
+	Name      string
+	Type      string
+	Null      string
+	Default   string
+	Extra     string
+	Comment   string
+	Charset   string
+	Collation string
+	colidx    int
+	flag      int // 1=drop, 2=add , 3=update , 4=move
 }
 
 func (c *Column) String() string {
@@ -42,6 +43,12 @@ func (c *Column) GetSQL() string {
 	var result string
 
 	result = "`" + c.Name + "` " + c.Type
+	if c.Charset != "" {
+		result += " CHARACTER SET " + c.Charset
+	}
+	if c.Collation != "" {
+		result += " COLLATE " + c.Collation
+	}
 	if c.Null == "YES" {
 		result += " NULL"
 	} else {
@@ -199,14 +206,27 @@ func (d *DB) GetTableInfo(name string) *Table {
 
 		idx := 0
 		for _, c := range data {
+			collation := c.Get("Collation").(string)
+			var charset = ""
+			if collation != "" {
+				charsetQuery := fmt.Sprintf("SHOW COLLATION WHERE Collation = '%s'", collation)
+				charsetData, err := d.GetData(charsetQuery, nil)
+				if err != nil {
+					log.Fatalln("get data error", charsetQuery, err)
+					return nil
+				}
+				charset = charsetData[0].Get("Charset").(string)
+			}
 			col := &Column{
-				Idx:     idx,
-				Name:    c.Get("Field").(string),
-				Type:    c.Get("Type").(string),
-				Null:    c.Get("Null").(string),
-				Default: c.Get("Default").(string),
-				Extra:   c.Get("Extra").(string),
-				Comment: c.Get("Comment").(string),
+				Idx:       idx,
+				Name:      c.Get("Field").(string),
+				Type:      c.Get("Type").(string),
+				Null:      c.Get("Null").(string),
+				Default:   c.Get("Default").(string),
+				Extra:     c.Get("Extra").(string),
+				Comment:   c.Get("Comment").(string),
+				Charset:   charset,
+				Collation: collation,
 			}
 
 			// 컬럼 타입이 숫자일 경우 int(10) -> int 로 변경.

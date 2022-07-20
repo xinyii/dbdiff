@@ -125,10 +125,12 @@ func (d *DB) GetData(query string, columns map[string]*Column) ([]*Row, error) {
 					} else if strings.HasPrefix(columns[columnNames[idx]].Type, "char") ||
 						strings.HasPrefix(columns[columnNames[idx]].Type, "varchar") ||
 						strings.HasPrefix(columns[columnNames[idx]].Type, "json") ||
-						strings.HasPrefix(columns[columnNames[idx]].Type, "text") {
+						strings.HasPrefix(columns[columnNames[idx]].Type, "text") ||
+						strings.HasPrefix(columns[columnNames[idx]].Type, "longtext") {
 						value = mysqlEscape(col)
 					} else if strings.HasPrefix(columns[columnNames[idx]].Type, "date") ||
-						strings.HasPrefix(columns[columnNames[idx]].Type, "datetime") {
+						strings.HasPrefix(columns[columnNames[idx]].Type, "datetime") ||
+						strings.HasPrefix(columns[columnNames[idx]].Type, "blob") {
 						value = string(col)
 					} else {
 						log.Fatalln("invalid data type", columns[columnNames[idx]].Name, columns[columnNames[idx]].Type)
@@ -153,17 +155,19 @@ var reg1 = regexp.MustCompile("DEFINER=[^ ]* ")
 
 // var reg2 = regexp.MustCompile("ENGINE=[^ ]* ")
 var reg3 = regexp.MustCompile("AUTO_INCREMENT=[^ ]* ")
-var reg4 = regexp.MustCompile("DEFAULT CHARSET=[^ ]* ")
+
+//var reg4 = regexp.MustCompile("DEFAULT CHARSET=[^ ]* ")
 var reg5 = regexp.MustCompile("ALGORITHM=[^ ]* ")
-var reg6 = regexp.MustCompile("ROW_FORMAT=[^ ]* ")
+
+//var reg6 = regexp.MustCompile("ROW_FORMAT=[^ ]* ")
 
 func ignoreDefiner(result string) string {
 	result = reg1.ReplaceAllString(result, "")
 	// result = reg2.ReplaceAllString(result, "")
 	result = reg3.ReplaceAllString(result, "")
-	result = reg4.ReplaceAllString(result, "")
+	//result = reg4.ReplaceAllString(result, "")
 	result = reg5.ReplaceAllString(result, "")
-	result = reg6.ReplaceAllString(result, "")
+	//result = reg6.ReplaceAllString(result, "")
 	result = strings.Replace(result, "SQL SECURITY DEFINER ", "", -1)
 
 	return result

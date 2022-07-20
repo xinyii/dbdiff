@@ -44,8 +44,9 @@ func DataDiff(srcDB, dstDB *DB, conf *Config) bool {
 		}
 
 		dstTable := dstDB.GetTableInfo(t)
-		if srcTable == nil {
-			log.Fatal("load table info error", err)
+		if dstTable == nil {
+			log.Println("load table info error", err)
+			continue
 		}
 
 		if dd := srcTable.compare(dstTable); dd != "" {

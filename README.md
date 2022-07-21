@@ -2,25 +2,20 @@
 
 [中文说明](./README_CN.md)
 
-- create mysql schema and data diff script.
-- create markdown schema document.
+- Create mysql schema and data diff script.
+- Create markdown schema document.
+- It is written in golang and can be built and used on any OS.
 
-It is a tool to compare mysql databases and extract schema and data changes to sql.
+## Install
 
-There is also a function to generate schema documents as md files.
-
-It is written in golang and can be built and used on any OS.
-
-## install
-
-1. install golang latest. (https://golang.org/dl/)
-2. download src `git clone https://github.com/jaksal/dbdiff.git`
-3. goto src folder 
+1. Install golang latest. (https://golang.org/dl/)
+2. Download src `git clone https://github.com/jaksal/dbdiff.git`
+3. Goto src folder 
 4. `go get && go build`
 
-## usage
+## Usage
 
-### create schema diff script
+### Create schema diff script
 
 ```
 dbdiff -diff_type=schema
@@ -29,7 +24,7 @@ dbdiff -diff_type=schema
   -output=output.sql
 ```
 
-### create data diff script ( The table to be compared must have the same schema to work properly. )
+### Create data diff script ( The table to be compared must have the same schema to work properly. )
 
 ```
 dbdiff -diff_type=data
@@ -38,7 +33,7 @@ dbdiff -diff_type=data
   -output=output.sql
 ```
 
-### create markdown document 
+### Create markdown document 
 
 ```
 dbdiff -diff_type=md
@@ -49,7 +44,7 @@ dbdiff -diff_type=md
 - The sample files are in the sample folder. 
 - output md file convert to pdf ==> ( https://github.com/jaksal/md2pdf )
 
-### create sql script
+### Create sql script
 
 ```
 dbdiff -diff_type=sql
@@ -57,7 +52,7 @@ dbdiff -diff_type=sql
   -output=output.sql
 ```
 
-### extra option
+### Extra option
 
 ```
   -include="test_"    // include db object name containing test_  
@@ -66,7 +61,7 @@ dbdiff -diff_type=sql
   -ignore_column=update_date  // ignore column in data diff mode
 ```
 
-## bug
+## Bug
 
 When comparing tables, if only the column name has been changed, it cannot be known with sql alone, so drop the column and add a new one.
 Please note that data will be lost during this process.

@@ -1,5 +1,4 @@
-dbdiff
-======
+# dbdiff
 
 [中文说明](./README_CN.md)
 
@@ -12,18 +11,16 @@ There is also a function to generate schema documents as md files.
 
 It is written in golang and can be built and used on any OS.
 
-install :
--------------
+## install
 
-* install golang latest. (https://golang.org/dl/)
-* download src (git clone https://github.com/jaksal/dbdiff.git)
-* goto src folder 
-* go get && go build
+1. install golang latest. (https://golang.org/dl/)
+2. download src `git clone https://github.com/jaksal/dbdiff.git`
+3. goto src folder 
+4. `go get && go build`
 
-usage :
--------------
+## usage
 
-* create schema diff script
+### create schema diff script
 
 ```
 dbdiff -diff_type=schema
@@ -32,7 +29,7 @@ dbdiff -diff_type=schema
   -output=output.sql
 ```
 
-* create data diff script ( The table to be compared must have the same schema to work properly. )
+### create data diff script ( The table to be compared must have the same schema to work properly. )
 
 ```
 dbdiff -diff_type=data
@@ -41,17 +38,18 @@ dbdiff -diff_type=data
   -output=output.sql
 ```
 
-* create markdown document 
+### create markdown document 
 
 ```
 dbdiff -diff_type=md
   -source="uid:pwd@tcp(server_ip:port)/dbname"
   -output=output.md
 ```
--- The sample files are in the sample folder. 
--- output md file convert to pdf ==> ( https://github.com/jaksal/md2pdf )
 
-* create sql script
+- The sample files are in the sample folder. 
+- output md file convert to pdf ==> ( https://github.com/jaksal/md2pdf )
+
+### create sql script
 
 ```
 dbdiff -diff_type=sql
@@ -59,7 +57,7 @@ dbdiff -diff_type=sql
   -output=output.sql
 ```
 
-* extra option
+### extra option
 
 ```
   -include="test_"    // include db object name containing test_  
@@ -68,7 +66,7 @@ dbdiff -diff_type=sql
   -ignore_column=update_date  // ignore column in data diff mode
 ```
 
-* bug
+## bug
 
 When comparing tables, if only the column name has been changed, it cannot be known with sql alone, so drop the column and add a new one.
 Please note that data will be lost during this process.

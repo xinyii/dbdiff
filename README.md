@@ -1,14 +1,16 @@
 dbdiff
 ======
 
-create mysql schema and data diff script.
-create markdown schema document.
+[中文说明](./README_CN.md)
 
-mysql database 를 비교하여 스키마 및 데이터 변경사항을 sql 로 추출해주는 툴입니다.
+- create mysql schema and data diff script.
+- create markdown schema document.
 
-스키마 문서를 md 파일로 생성하는 기능도 있습니다.
+It is a tool to compare mysql databases and extract schema and data changes to sql.
 
-golang으로 작성되어 어느 OS에서도 빌드해서 사용가능합니다.
+There is also a function to generate schema documents as md files.
+
+It is written in golang and can be built and used on any OS.
 
 install :
 -------------
@@ -30,7 +32,7 @@ dbdiff -diff_type=schema
   -output=output.sql
 ```
 
-* create data diff scirpt ( 비교할려는 테이블의 스키마가 동일해야만 정상적으로 동작합니다 )
+* create data diff script ( The table to be compared must have the same schema to work properly. )
 
 ```
 dbdiff -diff_type=data
@@ -46,10 +48,10 @@ dbdiff -diff_type=md
   -source="uid:pwd@tcp(server_ip:port)/dbname"
   -output=output.md
 ```
--- 샘플파일은 sample 폴더에 있습니다. 
+-- The sample files are in the sample folder. 
 -- output md file convert to pdf ==> ( https://github.com/jaksal/md2pdf )
 
-* create sql scrpit
+* create sql script
 
 ```
 dbdiff -diff_type=sql
@@ -68,5 +70,5 @@ dbdiff -diff_type=sql
 
 * bug
 
-테이블 비교시 컬럼이름만 변경된 경우는 sql 만으로 알수가 없어서 해당컬럼을 drop 하고 새로 추가합니다. 
-이 과정에서 데이터가 유실되니 이부분 유의해주시기 바랍니다.
+When comparing tables, if only the column name has been changed, it cannot be known with sql alone, so drop the column and add a new one.
+Please note that data will be lost during this process.

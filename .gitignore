@@ -3,3 +3,4 @@
 *.sql
 go.sum
 .idea/
+out/
